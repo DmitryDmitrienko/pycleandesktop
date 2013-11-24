@@ -16,11 +16,11 @@ import json
 class DesktopError(Exception):
     'Ошибка для не верного пути к папке'
 
-    def __init__(self, mesage):
-        self.mesage = mesage
+    def __init__(self, message):
+        self.mesage = message
 
     def __str__(self):
-        return repr(self.mesage)
+        return repr(self.message)
 
 
 DEFAULT_FOLDER = os.path.expanduser('~/Desktop') + '/'
@@ -97,4 +97,4 @@ if __name__ == '__main__':
     try:
         run_with_option_file(args.desktop, args.option)
     except DesktopError as e:
-        print e.mesage
+        print e.message
