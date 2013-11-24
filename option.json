@@ -1,0 +1,19 @@
+{
+	"Documents": [
+		".txt", 
+		".docx",
+		".pdf",
+		".pages"
+	],
+	"Pictures": [
+		".jpeg", 
+		".png", 
+		".gif",
+		".jpg"
+	],
+	"Scripts": [
+		".py",
+		".sh",
+		".yaml"
+	]
+}

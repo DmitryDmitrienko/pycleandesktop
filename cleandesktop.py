@@ -4,11 +4,13 @@
 	Скрипт для очистки рабочего стола
 	Автор: Дмитрий Дмитриенко <dmitry.dmitrienko@outlook.com>
 '''
-__version__ = '0.1'
+__version__ = '0.2'
 
 import argparse
+import codecs
 import shutil
 import os
+import json
 
 class DesktopError(Exception):
     'Ошибка для не верного пути к папке'
@@ -18,6 +20,11 @@ class DesktopError(Exception):
         return repr(self.mesage)
 
 DEFAULT_FOLDER = os.path.expanduser('~/Desktop') + '/'
+
+DEFAULT_OPTION = {
+    'Documents': ('.txt', '.doc', '.pdf'),
+    'Pictures': ('.jpg', '.png', '.gif'),
+}
 
 
 def print_info(path_folder):
@@ -47,10 +54,13 @@ def cleand_desktop(path_to_desktop, option):
     Очистка рабочего стола используя настройки 'option'
     '''
     try:
+        if '~' in path_to_desktop:
+            path_to_desktop = os.path.expanduser(path_to_desktop)
         root, dir, files = iter(os.walk(path_to_desktop)).next()
-    except StopIteration:
-        raise DesktopError(u'Fail path')
+    except StopIteration as e:
+        raise DesktopError(u'Fail desktop path')
     for file in files:
+        file = unicode(file, 'utf-8')
         for name_folder, ext in option.items():
             for e in ext:
                 if e in file:
@@ -58,16 +68,27 @@ def cleand_desktop(path_to_desktop, option):
                     path_file = path_to_desktop + file
                     move_file(path_file, new_folder)
 
+def run_with_option_file(path_to_desktop, option_file):
+    '''(str,str) -> NoneType
+    Запуск очистки рабочего стола с файлами настроек и путём до рабочего стола
+    '''
+    if os.path.exists(option_file):
+            with codecs.open(option_file, 'r', encoding='utf-8') as json_file:
+                try:
+                    json_data = json.load(json_file)
+                except ValueError as e:
+                    raise DesktopError(e.message)
+                cleand_desktop(path_to_desktop, json_data)
+                json_file.close()
+    else:
+        raise DesktopError(u'Fail path option file')
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Clean desktop')
     parser.add_argument('--desktop', help='path to desktop folder', default=DEFAULT_FOLDER)
+    parser.add_argument('--option', help='path to option file', default='./option.json')
     args = parser.parse_args()
-    option = {
-        'document': ('.txt', '.doc', '.pdf'),
-        'pictures': ('.jpg', '.png', '.gif'),
-    }
     try:
-        cleand_desktop(args.desktop, option)
+        run_with_option_file(args.desktop, args.option)
     except DesktopError as e:
         print e.mesage
