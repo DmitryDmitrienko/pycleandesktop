@@ -1,6 +1,6 @@
 #coding=utf-8
 ''' Codeant, 
-	Developed web application and desktop application company.
+	Development company for web and desktop applications 
 	Скрипт для очистки рабочего стола
 	Автор: Дмитрий Дмитриенко <dmitry.dmitrienko@outlook.com>
 '''
