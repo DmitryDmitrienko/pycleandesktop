@@ -10,6 +10,13 @@ import argparse
 import shutil
 import os
 
+class DesktopError(Exception):
+    'Ошибка для не верного пути к папке'
+    def __init__(self, mesage):
+        self.mesage = mesage
+    def __str__(self):
+        return repr(self.mesage)
+
 DEFAULT_FOLDER = os.path.expanduser('~/Desktop') + '/'
 
 
@@ -39,7 +46,10 @@ def cleand_desktop(path_to_desktop, option):
     '''(str,dict) -> NoneType
     Очистка рабочего стола используя настройки 'option'
     '''
-    root, dir, files = iter(os.walk(path_to_desktop)).next()
+    try:
+        root, dir, files = iter(os.walk(path_to_desktop)).next()
+    except StopIteration:
+        raise DesktopError(u'Fail path')
     for file in files:
         for name_folder, ext in option.items():
             for e in ext:
@@ -57,4 +67,7 @@ if __name__ == '__main__':
         'document': ('.txt', '.doc', '.pdf'),
         'pictures': ('.jpg', '.png', '.gif'),
     }
-    cleand_desktop(args.desktop, option)
+    try:
+        cleand_desktop(args.desktop, option)
+    except DesktopError as e:
+        print e.mesage
