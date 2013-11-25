@@ -3,7 +3,8 @@
 		".txt", 
 		".docx",
 		".pdf",
-		".pages"
+		".pages",
+		".doc"
 	],
 	"Pictures": [
 		".jpeg", 

@@ -4,7 +4,7 @@
     Скрипт для очистки рабочего стола
     Автор: Дмитрий Дмитриенко <dmitry.dmitrienko@outlook.com>
 '''
-__version__ = '0.2'
+__version__ = '0.3'
 
 import argparse
 import codecs
@@ -67,7 +67,7 @@ def cleand_desktop(path_to_desktop, option):
         file = unicode(file, 'utf-8')
         for name_folder, ext in option.items():
             for e in ext:
-                if e in file:
+                if file.endswith(e):
                     new_folder = path_to_desktop + name_folder
                     path_file = path_to_desktop + file
                     move_file(path_file, new_folder)
