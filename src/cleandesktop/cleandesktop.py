@@ -92,7 +92,7 @@ def run_with_option_file(path_to_desktop, option_file):
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Clean desktop')
     parser.add_argument('--desktop', help='path to desktop folder', default=DEFAULT_FOLDER)
-    parser.add_argument('--option', help='path to option file', default='./option.json')
+    parser.add_argument('--option', help='path to option file', default='./data/option.json')
     args = parser.parse_args()
     try:
         run_with_option_file(args.desktop, args.option)
